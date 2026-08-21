@@ -343,6 +343,10 @@
     border: 1px solid var(--border);
   }
   .question-option-row .input { min-width: 0; }
+  .sidebar-nav-icon { @apply flex h-5 w-5 shrink-0 items-center justify-center; }
+  .sidebar-nav-icon svg { @apply h-[1.05rem] w-[1.05rem]; }
+  .bottom-nav-icon { @apply flex h-5 w-5 items-center justify-center; }
+  .bottom-nav-icon svg { @apply h-[1.05rem] w-[1.05rem]; }
   :root[data-theme="light"] .question-editor-section { background: rgba(248, 250, 252, 0.78); }
   @media (max-width: 640px) {
     .question-editor-grid-3, .question-editor-grid-2 { grid-template-columns: 1fr; }

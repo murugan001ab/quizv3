@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { userNavMobile } from './Sidebar'
+import { NavIcon, userNavMobile } from './Sidebar'
 import { useAuth } from '../context/AuthContext'
 
 // Fixed bottom tab bar for mobile (< md). Admins keep using the desktop
@@ -26,8 +26,8 @@ export default function BottomNav() {
             className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 text-[0.6rem] font-medium whitespace-nowrap transition-colors duration-150
               ${active ? 'text-accent-300' : 'text-white/45'}`}
           >
-            <span className={`text-base leading-none transition-transform duration-150 ${active ? 'scale-110' : ''}`}>
-              {item.icon}
+            <span className={`bottom-nav-icon transition-transform duration-150 ${active ? 'scale-110' : ''}`}>
+              <NavIcon name={item.icon} />
             </span>
             {item.label}
           </Link>
