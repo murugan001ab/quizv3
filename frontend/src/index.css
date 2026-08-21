@@ -1,0 +1,567 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Bridge variables — several pages (TakeQuiz, Result, Results, LiveQuiz,
+ * Account, QuestionText, and the admin/* pages) were written against an
+ * older var(--x) design system before this file's Tailwind space/accent/glow
+ * theme existed. Rather than rewrite every inline style, we map the old
+ * variable names onto the real palette so those pages render on-theme.
+ */
+:root {
+  --bg: #050609;
+  --bg2: #0a0d16;
+  --bg3: rgba(255, 255, 255, 0.04);
+  --card: rgba(255, 255, 255, 0.055);
+  --card2: rgba(255, 255, 255, 0.09);
+  --border: rgba(255, 255, 255, 0.10);
+  --border2: rgba(255, 255, 255, 0.20);
+
+  --text: rgba(255, 255, 255, 0.90);
+  --text2: rgba(255, 255, 255, 0.60);
+  --text3: rgba(255, 255, 255, 0.40);
+
+  --accent: #3fc6f5;
+  --accent2: #6ef7c8;
+  --accent-dim: rgba(63, 198, 245, 0.10);
+
+  --blue: #5fdcff;
+  --purple: #8b7cff;
+  --yellow: #fbbf24;
+  --red: #f87171;
+  --red-dim: rgba(248, 113, 113, 0.10);
+
+  --font-head: 'Syne', system-ui, sans-serif;
+  --radius: 1.25rem;
+  --radius-sm: 0.75rem;
+  --transition: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root[data-theme="midnight"] {
+  --bg: #030712;
+  --bg2: #0f172a;
+  --bg3: rgba(255, 255, 255, 0.05);
+  --card: rgba(255, 255, 255, 0.06);
+  --card2: rgba(255, 255, 255, 0.1);
+  --border: rgba(255, 255, 255, 0.12);
+  --border2: rgba(255, 255, 255, 0.22);
+  --text: rgba(255, 255, 255, 0.92);
+  --text2: rgba(255, 255, 255, 0.66);
+  --text3: rgba(255, 255, 255, 0.42);
+  --accent: #38bdf8;
+  --accent2: #22c55e;
+  --accent-dim: rgba(56, 189, 248, 0.12);
+}
+
+:root[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg2: #eef2ff;
+  --bg3: rgba(15, 23, 42, 0.05);
+  --card: rgba(255, 255, 255, 0.92);
+  --card2: rgba(255, 255, 255, 0.98);
+  --border: rgba(15, 23, 42, 0.10);
+  --border2: rgba(15, 23, 42, 0.16);
+  --text: rgba(15, 23, 42, 0.94);
+  --text2: rgba(15, 23, 42, 0.68);
+  --text3: rgba(15, 23, 42, 0.50);
+  --accent: #2563eb;
+  --accent2: #0f766e;
+  --accent-dim: rgba(37, 99, 235, 0.10);
+  --blue: #2563eb;
+  --purple: #7c3aed;
+  --yellow: #d97706;
+  --red: #dc2626;
+  --red-dim: rgba(220, 38, 38, 0.08);
+}
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-space-950 text-white/90 font-sans antialiased;
+    background-image:
+      radial-gradient(ellipse 900px 600px at 12% -5%, rgba(139,124,255,0.20), transparent 55%),
+      radial-gradient(ellipse 800px 700px at 90% 10%, rgba(63,198,245,0.16), transparent 55%),
+      radial-gradient(ellipse 900px 700px at 50% 110%, rgba(255,124,214,0.10), transparent 55%),
+      linear-gradient(180deg, #06070c 0%, #090b13 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  :root[data-theme="light"] body {
+    @apply text-slate-900;
+    background-image:
+      radial-gradient(ellipse 900px 600px at 12% -5%, rgba(96,165,250,0.14), transparent 55%),
+      radial-gradient(ellipse 800px 700px at 90% 10%, rgba(34,197,94,0.06), transparent 55%),
+      linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+  }
+
+  :root[data-theme="light"] ::selection {
+    @apply bg-blue-500/20 text-slate-900;
+  }
+
+  ::selection {
+    @apply bg-accent-500/30 text-white;
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); background-clip: padding-box; }
+}
+
+@layer components {
+  /* Core glass surface */
+  .glass {
+    @apply bg-white/[0.055] backdrop-blur-2xl border border-white/10 shadow-glass shadow-inner-glass;
+  }
+  .glass-panel {
+    @apply glass rounded-4xl;
+  }
+  .glass-hover {
+    @apply transition-all duration-300 ease-out hover:bg-white/[0.09] hover:border-white/20 hover:-translate-y-1 hover:shadow-glass-lg;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium
+           transition-all duration-200 ease-out active:scale-[0.96]
+           disabled:opacity-40 disabled:pointer-events-none whitespace-nowrap;
+  }
+  .btn-primary {
+    @apply btn text-space-950 font-semibold shadow-glow
+           bg-gradient-to-b from-accent-300 to-accent-500 hover:brightness-110 hover:shadow-glow;
+  }
+  .btn-ghost {
+    @apply btn bg-white/[0.04] border border-white/10 text-white/80 hover:bg-white/[0.09] hover:text-white;
+  }
+  .btn-danger {
+    @apply btn bg-rose-500/15 border border-rose-400/30 text-rose-300 hover:bg-rose-500/25;
+  }
+  .btn-sm { @apply px-3.5 py-1.5 text-xs; }
+  .btn-lg { @apply px-6 py-3.5 text-base; }
+  .btn-icon { @apply px-2.5 py-2.5 aspect-square; }
+
+  :root[data-theme="light"] .glass,
+  :root[data-theme="light"] .glass-panel,
+  :root[data-theme="light"] .card {
+    @apply bg-white/80 border-slate-200/80 shadow-[0_12px_30px_rgba(15,23,42,0.06)];
+    backdrop-filter: blur(18px);
+  }
+  :root[data-theme="light"] .glass-hover {
+    @apply hover:bg-white hover:border-slate-300 hover:shadow-[0_14px_36px_rgba(15,23,42,0.08)];
+  }
+  :root[data-theme="light"] .btn-ghost {
+    @apply bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900;
+  }
+  :root[data-theme="light"] .btn-primary {
+    @apply text-white bg-gradient-to-b from-blue-500 to-blue-600 shadow-[0_10px_24px_rgba(37,99,235,0.20)];
+  }
+  :root[data-theme="light"] .btn-danger {
+    @apply bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100;
+  }
+  :root[data-theme="light"] .input {
+    @apply bg-white border-slate-200 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-blue-400 focus:ring-blue-500/10;
+  }
+  :root[data-theme="light"] .input-label {
+    @apply text-slate-500;
+  }
+  :root[data-theme="light"] .badge-gray,
+  :root[data-theme="light"] .tag {
+    @apply bg-slate-100 border-slate-200 text-slate-600;
+  }
+  :root[data-theme="light"] .page-title,
+  :root[data-theme="light"] .stat-value,
+  :root[data-theme="light"] .auth-logo {
+    @apply text-slate-900;
+  }
+  :root[data-theme="light"] .auth-subtitle,
+  :root[data-theme="light"] .auth-switch,
+  :root[data-theme="light"] .stat-label,
+  :root[data-theme="light"] .text-white\/30,
+  :root[data-theme="light"] .text-white\/35 {
+    color: rgb(51 65 85 / 0.52) !important;
+  }
+  :root[data-theme="light"] .page-sub,
+  :root[data-theme="light"] .stat-sub,
+  :root[data-theme="light"] .text-white\/40,
+  :root[data-theme="light"] .text-white\/50,
+  :root[data-theme="light"] .text-white\/60,
+  :root[data-theme="light"] .text-white\/70,
+  :root[data-theme="light"] .text-white\/80 {
+    color: rgb(51 65 85 / 0.72) !important;
+  }
+  :root[data-theme="light"] .text-white,
+  :root[data-theme="light"] .text-white\/90 {
+    color: rgb(15 23 42 / 0.94) !important;
+  }
+
+  :root[data-theme="light"] .table-wrap {
+    @apply bg-white/80 border border-slate-200 rounded-3xl;
+  }
+  :root[data-theme="light"] .table-wrap thead th {
+    @apply text-slate-500 border-b border-slate-200 bg-slate-50/80;
+  }
+  :root[data-theme="light"] .table-wrap tbody td {
+    @apply text-slate-700 border-b border-slate-100;
+  }
+  :root[data-theme="light"] .table-wrap tbody tr:hover {
+    @apply bg-slate-50;
+  }
+
+  :root[data-theme="light"] .auth-card,
+  :root[data-theme="light"] .modal,
+  :root[data-theme="light"] .modal-content,
+  :root[data-theme="light"] .toast {
+    @apply bg-white/90 border-slate-200 text-slate-900 shadow-[0_18px_40px_rgba(15,23,42,0.08)];
+  }
+  :root[data-theme="light"] .toast-success {
+    @apply bg-emerald-50 border-emerald-200 text-emerald-700;
+  }
+  :root[data-theme="light"] .toast-error {
+    @apply bg-rose-50 border-rose-200 text-rose-700;
+  }
+  :root[data-theme="light"] .toast-info {
+    @apply bg-blue-50 border-blue-200 text-blue-700;
+  }
+  :root[data-theme="light"] .sidebar,
+  :root[data-theme="light"] aside {
+    @apply bg-white/85 border-slate-200;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  }
+  :root[data-theme="light"] nav.bottom-nav,
+  :root[data-theme="light"] #bottom-nav,
+  :root[data-theme="light"] header {
+    @apply bg-white/90 border-slate-200 text-slate-700;
+  }
+  :root[data-theme="light"] .q-dot {
+    @apply bg-slate-200 border-slate-300 text-slate-700;
+  }
+  :root[data-theme="light"] .q-dot.current {
+    @apply bg-blue-500 text-white border-blue-500;
+  }
+  :root[data-theme="light"] .q-dot.answered {
+    @apply bg-emerald-500 text-white border-emerald-500;
+  }
+  :root[data-theme="light"] .q-dot.bookmarked {
+    @apply bg-amber-100 text-amber-700 border-amber-200;
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full rounded-2xl bg-white/[0.04] border border-white/10 px-4 py-2.5
+           text-sm text-white placeholder-white/30 outline-none
+           transition-all duration-200
+           focus:border-accent-400/50 focus:bg-white/[0.07] focus:ring-4 focus:ring-accent-400/10;
+  }
+  .input-label {
+    @apply text-xs font-medium text-white/50 tracking-wide uppercase mb-1.5 block;
+  }
+  .input-group { @apply flex flex-col; }
+
+  /* Custom select — shared across filters and editors. It deliberately uses
+     theme variables, so it remains readable in both dark and light modes. */
+  .custom-select-trigger { min-height: 2.75rem; }
+  .custom-select-menu {
+    max-height: 16rem;
+    border: 1px solid var(--border2);
+    background: color-mix(in srgb, var(--bg2) 88%, transparent);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(20px);
+  }
+  .custom-select-option {
+    @apply block w-full px-4 py-2.5 text-left text-sm transition-colors;
+    color: var(--text2);
+  }
+  .custom-select-option:hover { background: var(--bg3); color: var(--text); }
+  .custom-select-option.is-selected { background: var(--accent-dim); color: var(--accent); font-weight: 600; }
+  :root[data-theme="light"] .custom-select-menu {
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.14);
+  }
+
+  /* Compact icon toggle keeps theme selection visible without a form field. */
+  .theme-toggle {
+    @apply flex items-center gap-1 rounded-2xl p-1;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+  }
+  .theme-toggle button {
+    @apply flex flex-1 items-center justify-center rounded-xl py-2 text-sm transition-all duration-200;
+    color: var(--text3);
+  }
+  .theme-toggle button:hover { color: var(--text); background: color-mix(in srgb, var(--card2) 76%, transparent); }
+  .theme-toggle button.is-active {
+    color: var(--accent);
+    background: var(--card2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+  }
+  :root[data-theme="light"] .theme-toggle button.is-active { box-shadow: 0 4px 12px rgba(15, 23, 42, 0.10); }
+
+  /* Question builder */
+  .question-editor { @apply flex flex-col gap-4; }
+  .question-editor-header {
+    @apply flex items-start justify-between gap-4 rounded-2xl px-4 py-3;
+    background: linear-gradient(135deg, var(--accent-dim), transparent 70%);
+    border: 1px solid var(--border);
+  }
+  .question-editor-kicker { @apply block text-[0.65rem] font-semibold uppercase tracking-[0.16em]; color: var(--accent); }
+  .question-editor-header h3 { @apply mt-1 font-head text-lg font-bold; color: var(--text); }
+  .question-type-chip {
+    @apply shrink-0 rounded-full px-3 py-1.5 text-xs font-medium;
+    color: var(--accent); background: var(--accent-dim); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  .question-editor-section {
+    @apply rounded-2xl p-4;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: color-mix(in srgb, var(--card) 72%, transparent);
+    border: 1px solid var(--border);
+  }
+  .question-editor-section-title { @apply flex flex-col gap-0.5; }
+  .question-editor-section-title span { @apply text-sm font-semibold; color: var(--text); }
+  .question-editor-section-title small { @apply text-xs; color: var(--text3); }
+  .question-editor-grid { @apply grid gap-3; }
+  .question-editor-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .question-editor-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .question-editor-check { @apply flex items-center gap-2 text-sm; color: var(--text2); }
+  .question-editor-check input { accent-color: var(--accent); }
+  .question-editor-actions { @apply flex justify-end gap-3 pt-1; }
+  .question-options { @apply flex flex-col gap-2; }
+  .question-option-row {
+    @apply flex items-center gap-2 rounded-2xl p-2;
+    background: color-mix(in srgb, var(--bg3) 80%, transparent);
+    border: 1px solid var(--border);
+  }
+  .question-option-row .input { min-width: 0; }
+  :root[data-theme="light"] .question-editor-section { background: rgba(248, 250, 252, 0.78); }
+  @media (max-width: 640px) {
+    .question-editor-grid-3, .question-editor-grid-2 { grid-template-columns: 1fr; }
+    .question-editor-header { align-items: flex-start; flex-direction: column; }
+    .question-editor-actions { flex-direction: column-reverse; }
+    .question-editor-actions .btn { width: 100%; }
+  }
+
+  /* Badges / tags */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wider border;
+  }
+  .badge-easy   { @apply badge bg-emerald-400/10 text-emerald-300 border-emerald-400/25; }
+  .badge-medium { @apply badge bg-amber-400/10 text-amber-300 border-amber-400/25; }
+  .badge-hard   { @apply badge bg-rose-400/10 text-rose-300 border-rose-400/25; }
+  .badge-blue   { @apply badge bg-accent-400/10 text-accent-300 border-accent-400/25; }
+  .badge-gray   { @apply badge bg-white/5 text-white/40 border-white/10; }
+
+  .tag {
+    @apply inline-flex items-center rounded-full bg-white/[0.05] border border-white/10 px-2.5 py-1 text-[0.7rem] text-white/60;
+  }
+
+  /* Live pulse dot */
+  .live-dot {
+    @apply relative inline-block w-2 h-2 rounded-full bg-accent-400;
+  }
+  .live-dot::after {
+    content: '';
+    @apply absolute inset-0 rounded-full bg-accent-400 animate-ping;
+  }
+
+  /* Spinner */
+  .spinner {
+    @apply w-6 h-6 rounded-full border-2 border-white/15 border-t-accent-400 animate-spin;
+  }
+  .spinner-sm { @apply w-4 h-4 border-[1.5px]; }
+
+  /* Toasts */
+  .toast-container {
+    @apply fixed top-[4.5rem] right-4 left-4 z-[100] flex flex-col gap-2 items-end pointer-events-none md:left-auto md:top-4;
+  }
+  .toast {
+    @apply glass rounded-2xl px-4 py-3 text-sm font-medium text-white/90 w-full md:w-auto md:max-w-xs pointer-events-auto;
+    animation: fadeUp 0.3s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .toast-success { @apply border-emerald-400/30 bg-emerald-400/10; }
+  .toast-error { @apply border-rose-400/30 bg-rose-400/10; }
+  .toast-info { @apply border-accent-400/30; }
+
+  /* Page layout */
+  .page-wrap {
+    @apply max-w-6xl mx-auto flex flex-col gap-6 md:gap-8;
+  }
+  .page-header { @apply flex flex-col gap-1; }
+  .page-title { @apply font-head font-extrabold text-2xl md:text-3xl text-white tracking-tight; }
+  .page-sub { @apply text-sm text-white/40; }
+
+  .stats-grid { @apply grid grid-cols-1 sm:grid-cols-3 gap-4; }
+  .stat-card { @apply glass-panel p-5 flex flex-col gap-1; }
+  .stat-label { @apply text-xs uppercase tracking-wide text-white/40 font-medium; }
+  .stat-value { @apply font-head font-extrabold text-3xl text-white; }
+  .stat-sub { @apply text-xs text-white/30; }
+
+  .quiz-grid { @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4; }
+
+  /* Auth pages */
+  .auth-page { @apply relative min-h-screen flex items-center justify-center p-4 overflow-hidden; }
+  .auth-bg {
+    @apply absolute inset-0 -z-10;
+    background-image:
+      radial-gradient(ellipse 700px 500px at 20% 20%, rgba(139,124,255,0.25), transparent 55%),
+      radial-gradient(ellipse 700px 500px at 80% 80%, rgba(63,198,245,0.20), transparent 55%);
+  }
+  .auth-card { @apply glass-panel w-full max-w-md p-8 shadow-glass-lg; }
+  .auth-logo { @apply font-head font-extrabold text-2xl text-white text-center; }
+  .auth-logo span { @apply text-accent-400; }
+  .auth-subtitle { @apply text-sm text-white/40 text-center mt-1.5 mb-7; }
+  .auth-error { @apply bg-rose-500/10 border border-rose-400/25 text-rose-300 text-sm rounded-2xl px-4 py-2.5 mb-4; }
+  .auth-switch { @apply text-sm text-white/40 text-center mt-6; }
+  .auth-switch a { @apply text-accent-400 font-medium hover:text-accent-300; }
+
+  /* Fade-up stagger utility */
+  .fade-up    { animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+  .fade-up-1  { animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.08s both; }
+  .fade-up-2  { animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.16s both; }
+  .fade-up-3  { animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.24s both; }
+
+  /* ── Legacy-page bridge components ─────────────────────────────────── */
+
+  /* Generic panel — used with inline padding/border overrides throughout
+     TakeQuiz/Result/Results/LiveQuiz/Account/admin pages */
+  .card {
+    @apply glass-panel p-6;
+  }
+
+  /* Countdown / time-remaining pill */
+  .timer {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5
+           text-sm font-semibold bg-white/[0.05] border border-white/10 text-white/70;
+  }
+  .timer.warning {
+    @apply text-amber-300 border-amber-400/30 bg-amber-400/10;
+  }
+  .timer.danger {
+    @apply text-rose-300 border-rose-400/30 bg-rose-400/10 animate-pulse;
+  }
+
+  /* Progress bar (quiz question progress) */
+  .progress-bar {
+    @apply h-1.5 w-full rounded-full bg-white/10 overflow-hidden;
+  }
+  .progress-fill {
+    @apply h-full rounded-full bg-gradient-to-r from-accent-400 to-accent-600 transition-all duration-300 ease-out;
+  }
+
+  /* Quiz option buttons (A/B/C/D choices) */
+  .option-btn {
+    @apply w-full flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-left
+           bg-white/[0.03] border border-white/10 text-white/80
+           transition-all duration-200 ease-out cursor-pointer
+           hover:bg-white/[0.06] hover:border-white/20
+           disabled:cursor-default disabled:hover:bg-white/[0.03] disabled:hover:border-white/10;
+  }
+  .option-btn.selected {
+    @apply border-accent-400/60 bg-accent-400/10 text-white;
+  }
+  .option-btn.correct {
+    @apply border-emerald-400/40 bg-emerald-400/10 text-emerald-200;
+  }
+  .option-btn.wrong {
+    @apply border-rose-400/40 bg-rose-400/10 text-rose-200;
+  }
+  .option-key {
+    @apply flex items-center justify-center w-7 h-7 rounded-lg shrink-0
+           bg-white/10 font-head font-bold text-xs text-white/60;
+  }
+  .option-btn.selected .option-key {
+    @apply bg-accent-400 text-space-950;
+  }
+  .option-btn.correct .option-key {
+    @apply bg-emerald-400 text-space-950;
+  }
+  .option-btn.wrong .option-key {
+    @apply bg-rose-400 text-space-950;
+  }
+
+  /* Question navigator dots (TakeQuiz sidebar) */
+  .q-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    gap: 0.4rem;
+  }
+  .q-dot {
+    @apply aspect-square rounded-lg flex items-center justify-center text-xs font-semibold
+           bg-white/[0.04] border border-white/10 text-white/40 cursor-pointer
+           transition-all duration-150 hover:bg-white/[0.08] hover:text-white/70;
+  }
+  .q-dot.current {
+    @apply border-accent-400/60 bg-accent-400/15 text-accent-300;
+  }
+  .q-dot.answered {
+    @apply border-emerald-400/30 bg-emerald-400/10 text-emerald-300;
+  }
+
+  /* Score ring (Result page hero) */
+  .score-ring {
+    @apply flex flex-col items-center justify-center rounded-full;
+    width: 9rem;
+    height: 9rem;
+    border-width: 4px;
+    border-style: solid;
+  }
+  .score-num {
+    @apply font-head font-extrabold text-3xl;
+  }
+  .score-label {
+    @apply text-xs uppercase tracking-wide text-white/40 mt-1;
+  }
+
+  /* Divider */
+  .divider {
+    @apply border-t border-white/10 my-4;
+  }
+
+  /* ── Quiz fullscreen mode ───────────────────────────────────────── */
+  /* Body gets .quiz-active while TakeQuiz is ready & fullscreen is live.
+     We hide the sidebar <aside> and the bottom <nav> so only the quiz
+     content is visible, and collapse the main left padding. */
+  body.quiz-active aside {
+    display: none !important;
+  }
+  body.quiz-active #bottom-nav {
+    display: none !important;
+  }
+  body.quiz-active main {
+    padding-left: 1rem !important;
+    padding-top: 1rem !important;
+    padding-right: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  /* Table wrapper + table styling (Results, AdminUsers, AdminQuizzes) */
+  .table-wrap {
+    @apply overflow-x-auto;
+  }
+  .table-wrap table {
+    @apply w-full text-sm border-collapse;
+  }
+  .table-wrap thead th {
+    @apply text-left text-xs uppercase tracking-wide text-white/40 font-medium
+           px-4 py-3 border-b border-white/10 whitespace-nowrap;
+  }
+  .table-wrap tbody td {
+    @apply px-4 py-3 border-b border-white/5 text-white/80 align-middle;
+  }
+  .table-wrap tbody tr {
+    @apply transition-colors duration-150;
+  }
+  .table-wrap tbody tr:hover {
+    @apply bg-white/[0.03];
+  }
+}

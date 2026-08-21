@@ -1,0 +1,12 @@
+fastapi[standard]
+uvicorn
+sqlalchemy
+alembic
+python-jose[cryptography]
+bcrypt==4.0.1
+python-multipart
+pydantic[email]
+asyncpg
+websockets
+python-dotenv
+
